@@ -9,9 +9,11 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'scripts/app.bundle.js',
+    publicPath: '/',
   },
   devServer: {
     port: 3000,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -55,4 +57,4 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
   ],
-}
+};
