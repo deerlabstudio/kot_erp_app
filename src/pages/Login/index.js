@@ -18,7 +18,7 @@ class Login extends Component {
         <div className="wrap-login">
           <img
             className="logo"
-            src="./statics/images/deerlab_logo.jpg"
+            src="/statics/images/deerlab_logo.jpg"
             alt="Deerlab Logo"
           />
           <Form className="form-login">

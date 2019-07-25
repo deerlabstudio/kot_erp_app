@@ -1,5 +1,5 @@
 .container-login {
-  background: #F2F2F2;
+  background: #EDF0F5;
   min-height: 100vh;
   display: flex;
   flex-wrap: wrap;
@@ -24,6 +24,14 @@
 
 .login-button {
   width: 100%;
+  background: #DE5751;
+  border: none;
+}
+
+.login-button:hover {
+  background: #FFFFFF;
+  border: 1px solid #DE5751;
+  color: #DE5751;
 }
 
 .logo {
