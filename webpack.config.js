@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -56,5 +57,10 @@ module.exports = {
       filename: 'styles/[name].css',
       chunkFilename: '[id].css',
     }),
+    new CopyWebpackPlugin([
+      {
+        from: 'src/statics', to: 'statics',
+      },
+    ]),
   ],
 };

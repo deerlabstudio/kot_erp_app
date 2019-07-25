@@ -1,0 +1,41 @@
+.container-login {
+  background: #F2F2F2;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 100%;
+}
+
+.wrap-login {
+  width: 390px;
+  background: #FFF;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 55px 55px;
+}
+
+.form-login {
+  margin-top: 5px;
+}
+
+.login-button {
+  width: 100%;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.company-footer {
+  position: absolute;
+  bottom: 50px;
+}
+
+
