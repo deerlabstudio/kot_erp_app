@@ -1,19 +1,19 @@
 export const actionTypesModalResolver = (actionType) => {
   const actionTypesModifiers = {
     1: {
-      title: 'New Record',
+      title: 'Nuevo Registro',
       variant: 'success',
-      text: 'Create',
+      text: 'Crear',
     },
     2: {
-      title: 'Edit Record',
+      title: 'Editar Registro',
       variant: 'primary',
-      text: 'Edit',
+      text: 'Editar',
     },
     3: {
-      title: 'Delete Record',
+      title: 'Eliminar Registro',
       variant: 'danger',
-      text: 'Delete',
+      text: 'Eliminar',
     }
   };
 

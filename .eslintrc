@@ -14,6 +14,7 @@
     "no-trailing-spaces": "off",
     "react/destructuring-assignment": ["off", "always", { "ignoreClassFields": false }],
     "react/prop-types": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "camelcase": "off"
   }
 }

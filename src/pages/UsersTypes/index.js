@@ -5,53 +5,38 @@ import { Button, Row } from 'react-bootstrap';
 import '../../styles/Crud.css';
 
 // Components
-import DataTable from './users-tables';
-import ModalSave from './modal-save';
+import DataTable from './data-table';
+import ModalSave from './data-modal';
 import AlertMessage from '../../components/Alert';
 
 // Services
 import {
-  getUsersList,
-  saveUsers,
-  updateUsers,
-  deleteUsers,
-} from '../../lib/services/users';
+  getUsersTypesList,
+  saveUsersTypesList,
+  updateUsersTypesList,
+  deleteUsersTypesList,
+} from '../../lib/services/userstypes';
 
-import { getUsersTypesList } from '../../lib/services/userstypes';
-
-class Users extends Component {
+class UsersTypes extends Component {
   state = {
     showModal: false,
-    users: [],
-    usersTypesList: [],
-    userWorking: {},
+    usersTypes: [],
+    usersTypesWorking: {},
     actionType: 1,
     hasError: false,
   };
 
   componentDidMount() {
-    this.handleGetUsers().catch(this.errorHandler);
-    this.handleGetUsersTypes().catch(this.errorHandler);
+    this.handleGetUsersList().catch(this.errorHandler);
   }
 
-  getUsers = () => getUsersList();
+  getListUsersTypes = () => getUsersTypesList();
 
-  getUsersTypes = () => getUsersTypesList();
-
-  handleGetUsers = () =>
-  this.getUsers()
-  .then((usersList) => {
+  handleGetUsersList = () =>
+  this.getListUsersTypes()
+  .then((usersTypesList) => {
     this.setState({
-      users: usersList,
-      hasError: false,
-    });
-  });
-
-  handleGetUsersTypes = () =>
-  this.getUsersTypes()
-  .then((usersTypes) => {
-    this.setState({
-      usersTypesList: usersTypes,
+      usersTypes: usersTypesList,
       hasError: false,
     });
   });
@@ -71,7 +56,7 @@ class Users extends Component {
     this.setState({
       showModal: true,
       actionType: 2,
-      userWorking: user,
+      usersTypesWorking: user,
     });
   }
 
@@ -79,7 +64,7 @@ class Users extends Component {
     this.setState({
       showModal: true,
       actionType: 3,
-      userWorking: user,
+      usersTypesWorking: user,
     });
   }
 
@@ -103,7 +88,7 @@ class Users extends Component {
 
     this.setState({
       showModal: false,
-      userWorking: {},
+      usersTypesWorking: {},
       actionType: 0,
     });
   }
@@ -111,40 +96,39 @@ class Users extends Component {
   handleCancelModal = () => {
     this.setState({
       showModal: false,
-      userWorking: {},
+      usersTypesWorking: {},
       actionType: 0,
     });
   }
 
   saveRegister = (data) => {
-    saveUsers(data)
+    saveUsersTypesList(data)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetUsersList().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   updateRegister = (data) => {
     const { id } = data;
-    updateUsers(id, data)
+    updateUsersTypesList(id, data)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetUsersList().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   deleteRegister = (data) => {
     const { id } = data;
-    deleteUsers(id)
+    deleteUsersTypesList(id)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetUsersList().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   render() {
     const {
       showModal,
-      users,
-      usersTypesList,
-      userWorking,
+      usersTypes,
+      usersTypesWorking,
       hasError,
       actionType,
     } = this.state;
@@ -165,7 +149,7 @@ class Users extends Component {
           </Row>
           <Row className="table-crud">
             <DataTable
-              users={users}
+              items={usersTypes}
               onEdit={this.handleEditAction}
               onDelete={this.handleDeleteAction}
             />
@@ -174,8 +158,7 @@ class Users extends Component {
             showModal ? (
               <ModalSave
                 actionType={actionType}
-                data={userWorking}
-                usersTypesList={usersTypesList}
+                data={usersTypesWorking}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}
@@ -188,4 +171,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default UsersTypes;

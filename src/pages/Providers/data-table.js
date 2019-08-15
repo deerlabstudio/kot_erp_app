@@ -7,23 +7,21 @@ const DataTable = props => (
     <thead>
       <tr>
         <th>#</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
+        <th>Nombre</th>
+        <th>Contacto</th>
         <th>Correo</th>
-        <th>Tipo Usuario</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {
-        props.users.map(user => (
+        props.items.map(user => (
           <tr key={user.id}>
             <td>{user.id}</td>
-            <td>{user.firstname}</td>
-            <td>{user.lastname}</td>
+            <td>{user.name}</td>
+            <td>{user.contact}</td>
             <td>{user.email}</td>
-            <td>{user.UsersType.name}</td>
             <td>{user.status ? 'Activo' : 'Inactivo'}</td>
             <td>
               <Button variant="outline-info" onClick={() => props.onEdit(user)}>Editar</Button>
@@ -37,11 +35,11 @@ const DataTable = props => (
 );
 
 DataTable.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.object),
+  items: PropTypes.arrayOf(PropTypes.object),
 };
 
 DataTable.defaultProps = {
-  users: [],
+  items: [],
 };
 
 export default DataTable;

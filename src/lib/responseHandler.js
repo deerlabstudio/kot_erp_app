@@ -12,6 +12,5 @@ export const processResponse = (response) => {
   }
 
   const error = new Error(response.statusText);
-
   return Promise.reject(error);
 };

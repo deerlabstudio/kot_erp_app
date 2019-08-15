@@ -5,53 +5,38 @@ import { Button, Row } from 'react-bootstrap';
 import '../../styles/Crud.css';
 
 // Components
-import DataTable from './users-tables';
-import ModalSave from './modal-save';
+import DataTable from './data-table';
+import ModalSave from './data-modal';
 import AlertMessage from '../../components/Alert';
 
 // Services
 import {
-  getUsersList,
-  saveUsers,
-  updateUsers,
-  deleteUsers,
-} from '../../lib/services/users';
+  getProvidersList,
+  saveProviders,
+  updateProviders,
+  deleteProviders,
+} from '../../lib/services/providers';
 
-import { getUsersTypesList } from '../../lib/services/userstypes';
-
-class Users extends Component {
+class Providers extends Component {
   state = {
     showModal: false,
-    users: [],
-    usersTypesList: [],
-    userWorking: {},
+    providers: [],
+    providerWorking: {},
     actionType: 1,
     hasError: false,
   };
 
   componentDidMount() {
-    this.handleGetUsers().catch(this.errorHandler);
-    this.handleGetUsersTypes().catch(this.errorHandler);
+    this.handleGetListProviders().catch(this.errorHandler);
   }
 
-  getUsers = () => getUsersList();
+  getListProviders = () => getProvidersList();
 
-  getUsersTypes = () => getUsersTypesList();
-
-  handleGetUsers = () =>
-  this.getUsers()
-  .then((usersList) => {
+  handleGetListProviders = () =>
+  this.getListProviders()
+  .then((providersList) => {
     this.setState({
-      users: usersList,
-      hasError: false,
-    });
-  });
-
-  handleGetUsersTypes = () =>
-  this.getUsersTypes()
-  .then((usersTypes) => {
-    this.setState({
-      usersTypesList: usersTypes,
+      providers: providersList,
       hasError: false,
     });
   });
@@ -71,7 +56,7 @@ class Users extends Component {
     this.setState({
       showModal: true,
       actionType: 2,
-      userWorking: user,
+      providerWorking: user,
     });
   }
 
@@ -79,7 +64,7 @@ class Users extends Component {
     this.setState({
       showModal: true,
       actionType: 3,
-      userWorking: user,
+      providerWorking: user,
     });
   }
 
@@ -103,7 +88,7 @@ class Users extends Component {
 
     this.setState({
       showModal: false,
-      userWorking: {},
+      providerWorking: {},
       actionType: 0,
     });
   }
@@ -111,40 +96,39 @@ class Users extends Component {
   handleCancelModal = () => {
     this.setState({
       showModal: false,
-      userWorking: {},
+      providerWorking: {},
       actionType: 0,
     });
   }
 
   saveRegister = (data) => {
-    saveUsers(data)
+    saveProviders(data)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetListProviders().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   updateRegister = (data) => {
     const { id } = data;
-    updateUsers(id, data)
+    updateProviders(id, data)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetListProviders().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   deleteRegister = (data) => {
     const { id } = data;
-    deleteUsers(id)
+    deleteProviders(id)
     .then(() => {
-      this.handleGetUsers().catch(this.errorHandler);
+      this.handleGetListProviders().catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   render() {
     const {
       showModal,
-      users,
-      usersTypesList,
-      userWorking,
+      providers,
+      providerWorking,
       hasError,
       actionType,
     } = this.state;
@@ -165,7 +149,7 @@ class Users extends Component {
           </Row>
           <Row className="table-crud">
             <DataTable
-              users={users}
+              items={providers}
               onEdit={this.handleEditAction}
               onDelete={this.handleDeleteAction}
             />
@@ -174,8 +158,7 @@ class Users extends Component {
             showModal ? (
               <ModalSave
                 actionType={actionType}
-                data={userWorking}
-                usersTypesList={usersTypesList}
+                data={providerWorking}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}
@@ -188,4 +171,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default Providers;

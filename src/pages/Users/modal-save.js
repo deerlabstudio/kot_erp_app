@@ -6,8 +6,12 @@ import { actionTypesModalResolver } from '../../lib/actionTypesModalResolver';
 class ModalSave extends Component {
   state = {
     id: this.props.data.id || 0,
-    name: this.props.data.name || '',
+    firstname: this.props.data.firstname || '',
+    lastname: this.props.data.lastname || '',
     email: this.props.data.email || '',
+    password: this.props.data.password || '',
+    status: this.props.data.status || true,
+    usersTypesId: this.props.data.usersTypesId || 1,
   };
 
   handleInputChange = (event) => {
@@ -16,6 +20,15 @@ class ModalSave extends Component {
 
     this.setState({
       [name]: value,
+    });
+  }
+
+  handleInputSelect = (event) => {
+    const { target } = event;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: parseInt(value, 10),
     });
   }
 
@@ -28,8 +41,16 @@ class ModalSave extends Component {
   }
 
   render() {
-    const { showModal } = this.props;
-    const { name, email, id } = this.state;
+    const { showModal, usersTypesList } = this.props;
+    const {
+      firstname,
+      lastname,
+      email,
+      password,
+      status,
+      usersTypesId,
+      id
+    } = this.state;
 
     const actionType = actionTypesModalResolver(this.props.actionType);
 
@@ -43,26 +64,82 @@ class ModalSave extends Component {
             this.props.actionType !== 3 ? (
               <Form>
                 <Form.Group>
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Nombres</Form.Label>
                   <input type="hidden" id="id" name="id" value={id} />
                   <Form.Control
-                    name="name"
+                    name="firstname"
                     type="text"
-                    placeholder="Insert the name"
-                    value={name}
+                    placeholder="Ingresa los Nombres"
+                    value={firstname}
                     onChange={this.handleInputChange}
                   />
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>Apellidos</Form.Label>
+                  <Form.Control
+                    name="lastname"
+                    type="text"
+                    placeholder="Ingresa los Apellidos"
+                    value={lastname}
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Correo</Form.Label>
                   <Form.Control
                     name="email"
                     type="email"
-                    placeholder="Insert the email"
+                    placeholder="Ingresa el Correo"
                     value={email}
                     onChange={this.handleInputChange}
                   />
+                </Form.Group>
+
+                {
+                  this.props.actionType !== 2 ? (
+                    <Form.Group>
+                      <Form.Label>Clave</Form.Label>
+                      <Form.Control
+                        name="password"
+                        type="password"
+                        placeholder="Ingresa la contraseña"
+                        value={password}
+                        onChange={this.handleInputChange}
+                      />
+                    </Form.Group>
+                  ) : null
+                }
+
+
+                <Form.Group>
+                  <Form.Label>Estado</Form.Label>
+                  <select
+                    className="form-control"
+                    name="status"
+                    onChange={this.handleInputSelect}
+                    value={status}
+                  >
+                    <option key={1} value={1}>Activo</option>
+                    <option key={0} value={0}>Inactivo</option>
+                  </select>
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Tipo Usuario</Form.Label>
+                  <select
+                    className="form-control"
+                    name="usersTypesId"
+                    onChange={this.handleInputSelect}
+                    value={usersTypesId}
+                  >
+                    {
+                      usersTypesList.map(userType => (
+                        <option key={userType.id} value={userType.id}>{userType.name}</option>
+                      ))
+                    }
+                  </select>
                 </Form.Group>
               </Form>
             ) : (
@@ -88,6 +165,7 @@ ModalSave.propTypes = {
   showModal: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  usersTypesList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ModalSave;

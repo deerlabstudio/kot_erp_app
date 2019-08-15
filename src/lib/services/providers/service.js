@@ -3,45 +3,45 @@ import { errorHandler } from '../../errorHandler';
 
 import ServicesEndpoints from '../../../config/services_config';
 
-export default class UsersServices {
+export default class ProvidersServices {
   constructor() {
-    this.serviceUrl = ServicesEndpoints.users_services;
+    this.serviceUrl = `${ServicesEndpoints.providers_services}`;
   }
 
-  getUsers() {
-    return fetch(`${this.serviceUrl}/users`)
+  getProviders() {
+    return fetch(`${this.serviceUrl}/providers`)
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  getUserById(id) {
-    return fetch(`${this.serviceUrl}/users/${id}`)
+  getProvidersById(id) {
+    return fetch(`${this.serviceUrl}/providers/${id}`)
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  storeUsers(user) {
-    return fetch(`${this.serviceUrl}/users`, {
+  storeProviders(provider) {
+    return fetch(`${this.serviceUrl}/providers`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(provider)
       })
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  updateUsers(id, user) {
-    return fetch(`${this.serviceUrl}/users/${id}`, {
+  updateProviders(id, provider) {
+    return fetch(`${this.serviceUrl}/providers/${id}`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(provider)
       })
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  deleteUsers(id) {
-    return fetch(`${this.serviceUrl}/users/${id}`, {
+  deleteProviders(id) {
+    return fetch(`${this.serviceUrl}/providers/${id}`, {
         method: 'delete',
       })
       .then(processResponse)
