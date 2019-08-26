@@ -1,4 +1,5 @@
 export default {
+  auth_services: 'http://localhost:8080/auth_services',
   users_services: 'http://localhost:8080/users_services',
   providers_services: 'http://localhost:8080/providers_services',
   customers_services: 'http://localhost:8080/customers_services',

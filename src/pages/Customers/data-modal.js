@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Form } from 'react-bootstrap';
+import {
+  Modal,
+  Button,
+  Form,
+  Row,
+  Col,
+} from 'react-bootstrap';
 import { actionTypesModalResolver } from '../../lib/actionTypesModalResolver';
 
 class ModalSave extends Component {
   state = {
     id: this.props.data.id || 0,
-    firstname: this.props.data.firstname || '',
-    lastname: this.props.data.lastname || '',
+    name: this.props.data.name || '',
     email: this.props.data.email || '',
-    password: this.props.data.password || '',
-    company: this.props.company,
+    phone: this.props.data.phone || '',
+    code: this.props.data.code || '',
+    isCompany: this.props.data.isCompany || 0,
+    levelsId: this.props.data.levelsId || 0,
     status: this.props.data.status || true,
-    usersTypesId: this.props.data.usersTypesId || 1,
+    company: this.props.company,
   };
 
   handleInputChange = (event) => {
@@ -42,15 +49,16 @@ class ModalSave extends Component {
   }
 
   render() {
-    const { showModal, usersTypesList } = this.props;
+    const { showModal, levelsList } = this.props;
     const {
-      firstname,
-      lastname,
+      name,
       email,
-      password,
+      phone,
+      code,
+      isCompany,
       status,
-      usersTypesId,
-      id
+      levelsId,
+      id,
     } = this.state;
 
     const actionType = actionTypesModalResolver(this.props.actionType);
@@ -65,24 +73,13 @@ class ModalSave extends Component {
             this.props.actionType !== 3 ? (
               <Form>
                 <Form.Group>
-                  <Form.Label>Nombres</Form.Label>
+                  <Form.Label>Nombre</Form.Label>
                   <input type="hidden" id="id" name="id" value={id} />
                   <Form.Control
-                    name="firstname"
+                    name="name"
                     type="text"
-                    placeholder="Ingresa los Nombres"
-                    value={firstname}
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-
-                <Form.Group>
-                  <Form.Label>Apellidos</Form.Label>
-                  <Form.Control
-                    name="lastname"
-                    type="text"
-                    placeholder="Ingresa los Apellidos"
-                    value={lastname}
+                    placeholder="Ingresa el nombre"
+                    value={name}
                     onChange={this.handleInputChange}
                   />
                 </Form.Group>
@@ -91,60 +88,85 @@ class ModalSave extends Component {
                   <Form.Label>Correo</Form.Label>
                   <Form.Control
                     name="email"
-                    type="email"
-                    placeholder="Ingresa el Correo"
+                    type="text"
+                    placeholder="Ingresa el correo"
                     value={email}
                     onChange={this.handleInputChange}
                   />
                 </Form.Group>
 
-                {
-                  this.props.actionType !== 2 ? (
-                    <Form.Group>
-                      <Form.Label>Clave</Form.Label>
-                      <Form.Control
-                        name="password"
-                        type="password"
-                        placeholder="Ingresa la contraseña"
-                        value={password}
-                        onChange={this.handleInputChange}
-                      />
-                    </Form.Group>
-                  ) : null
-                }
-
-
                 <Form.Group>
-                  <Form.Label>Estado</Form.Label>
-                  <select
-                    className="form-control"
-                    name="status"
-                    onChange={this.handleInputSelect}
-                    value={status}
-                  >
-                    <option key={1} value={1}>Activo</option>
-                    <option key={0} value={0}>Inactivo</option>
-                  </select>
+                  <Form.Label>Telefono</Form.Label>
+                  <Form.Control
+                    name="phone"
+                    type="text"
+                    placeholder="Ingresa el telefono"
+                    value={phone}
+                    onChange={this.handleInputChange}
+                  />
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Tipo Usuario</Form.Label>
+                  <Form.Label>Nit</Form.Label>
+                  <Form.Control
+                    name="code"
+                    type="text"
+                    placeholder="Ingresa el nit"
+                    value={code}
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Nivel Cliente</Form.Label>
                   <select
                     className="form-control"
-                    name="usersTypesId"
+                    name="levelsId"
                     onChange={this.handleInputSelect}
-                    value={usersTypesId}
+                    value={levelsId}
                   >
+                    <option key={0} value={0}>Selecciona un Nivel</option>
                     {
-                      usersTypesList.map(userType => (
+                      levelsList.map(userType => (
                         <option key={userType.id} value={userType.id}>{userType.name}</option>
                       ))
                     }
                   </select>
                 </Form.Group>
+
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Es Compañia?</Form.Label>
+                      <select
+                        className="form-control"
+                        name="isCompany"
+                        onChange={this.handleInputSelect}
+                        value={isCompany}
+                      >
+                        <option key={1} value={1}>Si</option>
+                        <option key={0} value={0}>No</option>
+                      </select>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Estado</Form.Label>
+                      <select
+                        className="form-control"
+                        name="status"
+                        onChange={this.handleInputSelect}
+                        value={status}
+                      >
+                        <option key={1} value={1}>Activo</option>
+                        <option key={0} value={0}>Inactivo</option>
+                      </select>
+                    </Form.Group>
+                  </Col>
+                </Row>
               </Form>
             ) : (
-              <h4>Dou you want to delete the record?</h4>
+              <h4>Quieres eliminar el registro?</h4>
             )
           }
         </Modal.Body>
@@ -166,7 +188,6 @@ ModalSave.propTypes = {
   showModal: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  usersTypesList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ModalSave;

@@ -9,6 +9,7 @@ class ModalSave extends Component {
     name: this.props.data.name || '',
     description: this.props.data.description || '',
     discount: this.props.data.discount || 0,
+    company: this.props.company,
   };
 
   handleInputChange = (event) => {

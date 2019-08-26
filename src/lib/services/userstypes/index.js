@@ -4,7 +4,8 @@ import { transformListUsersTypes, transformUsersType } from './transform';
 export async function getUsersTypesList() {
   try {
     const usersTypesServices = new UsersTypesServices();
-    const usersTypesList = await usersTypesServices.getUsersTypes();
+    let usersTypesList = await usersTypesServices.getUsersTypes();
+     usersTypesList = usersTypesList.filter(type => type.id !== 1);
     return transformListUsersTypes(usersTypesList);
   } catch (error) {
     throw error;

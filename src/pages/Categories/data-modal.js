@@ -8,6 +8,8 @@ class ModalSave extends Component {
     id: this.props.data.id || 0,
     name: this.props.data.name || '',
     description: this.props.data.description || '',
+    status: this.props.data.status || '',
+    company: this.props.company,
   };
 
   handleInputChange = (event) => {
@@ -16,6 +18,15 @@ class ModalSave extends Component {
 
     this.setState({
       [name]: value,
+    });
+  }
+
+  handleInputSelect = (event) => {
+    const { target } = event;
+    const { value, name } = target;
+
+    this.setState({
+      [name]: parseInt(value, 10),
     });
   }
 
@@ -29,7 +40,12 @@ class ModalSave extends Component {
 
   render() {
     const { showModal } = this.props;
-    const { name, description, id } = this.state;
+    const {
+      name,
+      description,
+      status,
+      id
+    } = this.state;
 
     const actionType = actionTypesModalResolver(this.props.actionType);
 
@@ -63,6 +79,19 @@ class ModalSave extends Component {
                     value={description}
                     onChange={this.handleInputChange}
                   />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Estado</Form.Label>
+                  <select
+                    className="form-control"
+                    name="status"
+                    onChange={this.handleInputSelect}
+                    value={status}
+                  >
+                    <option key={1} value={1}>Activo</option>
+                    <option key={0} value={0}>Inactivo</option>
+                  </select>
                 </Form.Group>
               </Form>
             ) : (

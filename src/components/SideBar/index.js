@@ -21,9 +21,6 @@ const SideBar = (props) => {
             <NavLink activeClassName="active" to="/backoffice/dashboard">Dashboard</NavLink>
           </li>
           <li>
-            <NavLink activeClassName="active" to="/backoffice/userstypes">Tipos Usuarios</NavLink>
-          </li>
-          <li>
             <NavLink activeClassName="active" to="/backoffice/users">Usuarios</NavLink>
           </li>
           <li>
@@ -31,6 +28,18 @@ const SideBar = (props) => {
           </li>
           <li>
             <NavLink activeClassName="active" to="/backoffice/levels">Niveles</NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/backoffice/customers">Clientes</NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/backoffice/categories">Categorias</NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/backoffice/products">Productos</NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName="active" to="/backoffice/purchases">Compras</NavLink>
           </li>
         </ul>
 

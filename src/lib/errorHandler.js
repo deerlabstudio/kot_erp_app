@@ -3,5 +3,5 @@ export const errorHandler = (response) => {
     message: response.statusText,
     code: response.status,
   };
-  return error;
+  throw error;
 };

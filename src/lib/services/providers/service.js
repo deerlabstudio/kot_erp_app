@@ -8,8 +8,8 @@ export default class ProvidersServices {
     this.serviceUrl = `${ServicesEndpoints.providers_services}`;
   }
 
-  getProviders() {
-    return fetch(`${this.serviceUrl}/providers`)
+  getProviders(company) {
+    return fetch(`${this.serviceUrl}/providersByCompany?company=${company}`)
       .then(processResponse)
       .catch(errorHandler);
   }

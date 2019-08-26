@@ -1,10 +1,10 @@
 import LevelsServices from './service';
 import { transformListLevels } from './transform';
 
-export async function getLevelsList() {
+export async function getLevelsList(company) {
   try {
     const levelsServices = new LevelsServices();
-    const levelsList = await levelsServices.getLevels();
+    const levelsList = await levelsServices.getLevels(company);
     return transformListLevels(levelsList);
   } catch (error) {
     throw error;

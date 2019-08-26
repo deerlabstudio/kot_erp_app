@@ -11,32 +11,52 @@ import AlertMessage from '../../components/Alert';
 
 // Services
 import {
-  getUsersTypesList,
-  saveUsersTypesList,
-  updateUsersTypesList,
-  deleteUsersTypesList,
-} from '../../lib/services/userstypes';
+  getCustomersList,
+  saveCustomers,
+  updateCustomers,
+  deleteCustomers,
+} from '../../lib/services/customers';
 
-class UsersTypes extends Component {
+import { getLevelsList } from '../../lib/services/levels';
+
+// Utils
+import { getCompany } from '../../lib/token-manager';
+
+class Customers extends Component {
   state = {
+    company: getCompany(),
     showModal: false,
-    usersTypes: [],
-    usersTypesWorking: {},
+    customers: [],
+    customerWorking: {},
+    levels: [],
     actionType: 1,
     hasError: false,
   };
 
   componentDidMount() {
-    this.handleGetUsersList().catch(this.errorHandler);
+    const { company } = this.state;
+    this.handleGetListCustomers(company).catch(this.errorHandler);
+    this.handleGetListLevels(company).catch(this.errorHandler);
   }
 
-  getListUsersTypes = () => getUsersTypesList();
+  getListCustomers = company => getCustomersList(company);
 
-  handleGetUsersList = () =>
-  this.getListUsersTypes()
-  .then((usersTypesList) => {
+  getListLevels = company => getLevelsList(company);
+
+  handleGetListCustomers = company =>
+  this.getListCustomers(company)
+  .then((providersList) => {
     this.setState({
-      usersTypes: usersTypesList,
+      customers: providersList,
+      hasError: false,
+    });
+  });
+
+  handleGetListLevels = company =>
+  this.getListLevels(company)
+  .then((levelsList) => {
+    this.setState({
+      levels: levelsList,
       hasError: false,
     });
   });
@@ -52,34 +72,34 @@ class UsersTypes extends Component {
     });
   }
 
-  handleEditAction = (user) => {
+  handleEditAction = (customer) => {
     this.setState({
       showModal: true,
       actionType: 2,
-      usersTypesWorking: user,
+      customerWorking: customer,
     });
   }
 
-  handleDeleteAction = (user) => {
+  handleDeleteAction = (customer) => {
     this.setState({
       showModal: true,
       actionType: 3,
-      usersTypesWorking: user,
+      customerWorking: customer,
     });
   }
 
   handleSubmitModal = (data) => {
-    const { actionType } = this.state;
+    const { actionType, company } = this.state;
 
     switch (actionType) {
       case 1:
-        this.saveRegister(data);
+        this.saveRegister(data, company);
         break;
       case 2:
-        this.updateRegister(data);
+        this.updateRegister(data, company);
         break;
       case 3:
-        this.deleteRegister(data);
+        this.deleteRegister(data, company);
         break;
       default:
         // Nothing
@@ -88,7 +108,7 @@ class UsersTypes extends Component {
 
     this.setState({
       showModal: false,
-      usersTypesWorking: {},
+      customerWorking: {},
       actionType: 0,
     });
   }
@@ -96,41 +116,43 @@ class UsersTypes extends Component {
   handleCancelModal = () => {
     this.setState({
       showModal: false,
-      usersTypesWorking: {},
+      customerWorking: {},
       actionType: 0,
     });
   }
 
-  saveRegister = (data) => {
-    saveUsersTypesList(data)
+  saveRegister = (data, company) => {
+    saveCustomers(data)
     .then(() => {
-      this.handleGetUsersList().catch(this.errorHandler);
+      this.handleGetListCustomers(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  updateRegister = (data) => {
+  updateRegister = (data, company) => {
     const { id } = data;
-    updateUsersTypesList(id, data)
+    updateCustomers(id, data)
     .then(() => {
-      this.handleGetUsersList().catch(this.errorHandler);
+      this.handleGetListCustomers(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  deleteRegister = (data) => {
+  deleteRegister = (data, company) => {
     const { id } = data;
-    deleteUsersTypesList(id)
+    deleteCustomers(id)
     .then(() => {
-      this.handleGetUsersList().catch(this.errorHandler);
+      this.handleGetListCustomers(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   render() {
     const {
       showModal,
-      usersTypes,
-      usersTypesWorking,
+      customers,
+      customerWorking,
       hasError,
       actionType,
+      company,
+      levels,
     } = this.state;
 
     return (
@@ -144,12 +166,14 @@ class UsersTypes extends Component {
           ) : null
         }
         <div className="panel">
+          <h3>Clientes</h3>
+          <br />
           <Row>
             <Button onClick={this.handleActionNew}>Nuevo Registro</Button>
           </Row>
           <Row className="table-crud">
             <DataTable
-              items={usersTypes}
+              items={customers}
               onEdit={this.handleEditAction}
               onDelete={this.handleDeleteAction}
             />
@@ -158,7 +182,9 @@ class UsersTypes extends Component {
             showModal ? (
               <ModalSave
                 actionType={actionType}
-                data={usersTypesWorking}
+                data={customerWorking}
+                company={company}
+                levelsList={levels}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}
@@ -171,4 +197,4 @@ class UsersTypes extends Component {
   }
 }
 
-export default UsersTypes;
+export default Customers;

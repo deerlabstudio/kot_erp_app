@@ -3,7 +3,6 @@ import {
   Navbar,
   Button,
   Dropdown,
-  Image
 } from 'react-bootstrap';
 
 // Styles
@@ -17,13 +16,11 @@ const TopBar = props => (
     <div className="topbar-user">
       <Dropdown>
         <Dropdown.Toggle variant="info" id="user-top-menu">
-          <Image className="user-photo" src="/statics/images/CROP_SAHM.jpg" roundedCircle />
-          Alex Mejicanos
+          Opciones
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item>Perfil</Dropdown.Item>
-          <Dropdown.Item>Salir</Dropdown.Item>
+          <Dropdown.Item onClick={props.deleteSession}>Salir</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </div>

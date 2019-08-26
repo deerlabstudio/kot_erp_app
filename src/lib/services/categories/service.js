@@ -3,45 +3,45 @@ import { errorHandler } from '../../errorHandler';
 
 import ServicesEndpoints from '../../../config/services_config';
 
-export default class LevelsServices {
+export default class CategoriesServices {
   constructor() {
-    this.serviceUrl = `${ServicesEndpoints.customers_services}`;
+    this.serviceUrl = `${ServicesEndpoints.products_services}`;
   }
 
-  getLevels(company) {
-    return fetch(`${this.serviceUrl}/levelsByCompany?company=${company}`)
+  getCategories(company) {
+    return fetch(`${this.serviceUrl}/categoriesByCompany?company=${company}`)
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  getLevelsById(id) {
-    return fetch(`${this.serviceUrl}/levels/${id}`)
+  getCategoriesById(id) {
+    return fetch(`${this.serviceUrl}/categories/${id}`)
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  storeLevels(level) {
-    return fetch(`${this.serviceUrl}/levels`, {
+  storeCategories(category) {
+    return fetch(`${this.serviceUrl}/categories`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(level)
+        body: JSON.stringify(category)
       })
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  updateLevels(id, level) {
-    return fetch(`${this.serviceUrl}/levels/${id}`, {
+  updateCategories(id, category) {
+    return fetch(`${this.serviceUrl}/categories/${id}`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(level)
+        body: JSON.stringify(category)
       })
       .then(processResponse)
       .catch(errorHandler);
   }
 
-  deleteLevels(id) {
-    return fetch(`${this.serviceUrl}/levels/${id}`, {
+  deleteCategories(id) {
+    return fetch(`${this.serviceUrl}/categories/${id}`, {
         method: 'delete',
       })
       .then(processResponse)

@@ -8,14 +8,28 @@ import SideBar from '../../components/SideBar';
 import TopBar from '../../components/TopBar';
 import Content from '../../components/Content';
 
+// Utils
+import { getToken, deleteToken } from '../../lib/token-manager';
+
 class BackOffice extends Component {
   state = {
     openSideBar: true,
   };
 
+  componentDidMount() {
+    if (getToken() === null) {
+      this.props.history.push('/');
+    }
+  }
+
   toogleSideBar = () => {
     const { openSideBar } = this.state;
     this.setState({ openSideBar: !openSideBar });
+  }
+
+  deleteSession = () => {
+    deleteToken();
+    this.props.history.push('/');
   }
 
   render() {
@@ -25,7 +39,7 @@ class BackOffice extends Component {
       <div className="app-wrapper">
         <SideBar isOpen={openSideBar} />
         <div className="main-content">
-          <TopBar toogleSideBar={this.toogleSideBar} />
+          <TopBar toogleSideBar={this.toogleSideBar} deleteSession={this.deleteSession} />
           <Content />
         </div>
       </div>

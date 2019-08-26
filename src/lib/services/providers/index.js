@@ -1,10 +1,10 @@
 import ProvidersServices from './service';
 import { transformListProviders } from './transform';
 
-export async function getProvidersList() {
+export async function getProvidersList(company) {
   try {
     const providersServices = new ProvidersServices();
-    const providersList = await providersServices.getProviders();
+    const providersList = await providersServices.getProviders(company);
     return transformListProviders(providersList);
   } catch (error) {
     throw error;

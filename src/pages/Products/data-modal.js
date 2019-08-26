@@ -12,13 +12,15 @@ import { actionTypesModalResolver } from '../../lib/actionTypesModalResolver';
 class ModalSave extends Component {
   state = {
     id: this.props.data.id || 0,
-    name: this.props.data.name || '',
-    contact: this.props.data.contact || '',
-    email: this.props.data.email || '',
-    phone: this.props.data.phone || '',
-    webpage: this.props.data.webpage || '',
-    principal_phone: this.props.data.principal_phone || '',
-    contact_phone: this.props.data.contact_phone || '',
+    title: this.props.data.title || '',
+    description: this.props.data.description || '',
+    vendor: this.props.data.vendor || '',
+    height: this.props.data.height || '',
+    width: this.props.data.width || '',
+    weigth: this.props.data.weigth || '',
+    price: this.props.data.price || '',
+    sku: this.props.data.sku || '',
+    categoriesId: this.props.data.categoriesId || '',
     status: this.props.data.status || true,
     company: this.props.company,
   };
@@ -50,16 +52,18 @@ class ModalSave extends Component {
   }
 
   render() {
-    const { showModal } = this.props;
+    const { showModal, categoriesList } = this.props;
     const {
-      name,
-      contact,
-      email,
-      phone,
-      webpage,
-      principal_phone,
-      contact_phone,
+      title,
+      description,
+      vendor,
+      height,
+      width,
+      weigth,
+      price,
+      sku,
       status,
+      categoriesId,
       id,
     } = this.state;
 
@@ -78,88 +82,125 @@ class ModalSave extends Component {
                   <Form.Label>Nombre</Form.Label>
                   <input type="hidden" id="id" name="id" value={id} />
                   <Form.Control
-                    name="name"
+                    name="title"
                     type="text"
                     placeholder="Ingresa el nombre"
-                    value={name}
+                    value={title}
                     onChange={this.handleInputChange}
                   />
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Contacto</Form.Label>
+                  <Form.Label>Descripción</Form.Label>
                   <Form.Control
-                    name="contact"
+                    name="description"
                     type="text"
-                    placeholder="Ingresa el contacto"
-                    value={contact}
+                    placeholder="Ingresa la descripción"
+                    value={description}
                     onChange={this.handleInputChange}
                   />
                 </Form.Group>
 
-                <Form.Group>
-                  <Form.Label>Correo</Form.Label>
-                  <Form.Control
-                    name="email"
-                    type="text"
-                    placeholder="Ingresa el contacto"
-                    value={email}
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Teléfono</Form.Label>
+                      <Form.Label>Marca</Form.Label>
                       <Form.Control
-                        name="phone"
+                        name="vendor"
                         type="text"
-                        placeholder="Ingresa el telefono"
-                        value={phone}
+                        placeholder="Ingresa la Marca"
+                        value={vendor}
                         onChange={this.handleInputChange}
                       />
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Pagina Web</Form.Label>
+                      <Form.Label>Altura (cm)</Form.Label>
                       <Form.Control
-                        name="webpage"
+                        name="height"
                         type="text"
-                        placeholder="Ingresa el telefono"
-                        value={webpage}
+                        placeholder="Ingresa la altura"
+                        value={height}
                         onChange={this.handleInputChange}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
+
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Teléfono Principal</Form.Label>
+                      <Form.Label>Ancho (cm)</Form.Label>
                       <Form.Control
-                        name="principal_phone"
+                        name="width"
                         type="text"
-                        placeholder="Ingresa el telefono"
-                        value={principal_phone}
+                        placeholder="Ingresa el ancho"
+                        value={width}
                         onChange={this.handleInputChange}
                       />
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Teléfono Contacto</Form.Label>
+                      <Form.Label>Peso (kg)</Form.Label>
                       <Form.Control
-                        name="contact_phone"
+                        name="weigth"
                         type="text"
-                        placeholder="Ingresa el telefono"
-                        value={contact_phone}
+                        placeholder="Ingresa el peso"
+                        value={weigth}
                         onChange={this.handleInputChange}
                       />
                     </Form.Group>
                   </Col>
                 </Row>
+
                 <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Precio</Form.Label>
+                      <Form.Control
+                        name="price"
+                        type="text"
+                        placeholder="Ingresa el precio"
+                        value={price}
+                        onChange={this.handleInputChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>SKU</Form.Label>
+                      <Form.Control
+                        name="sku"
+                        type="text"
+                        placeholder="Ingresa el SKU"
+                        value={sku}
+                        onChange={this.handleInputChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Categoria</Form.Label>
+                      <select
+                        className="form-control"
+                        name="categoriesId"
+                        onChange={this.handleInputSelect}
+                        value={categoriesId}
+                      >
+                        <option key={0} value={0}>Selecciona una categoria</option>
+                        {
+                          categoriesList.map(category => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                          ))
+                        }
+                      </select>
+                    </Form.Group>
+                  </Col>
                   <Col>
                     <Form.Group>
                       <Form.Label>Estado</Form.Label>
@@ -174,7 +215,6 @@ class ModalSave extends Component {
                       </select>
                     </Form.Group>
                   </Col>
-                  <Col />
                 </Row>
               </Form>
             ) : (

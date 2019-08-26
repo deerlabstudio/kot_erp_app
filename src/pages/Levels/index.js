@@ -17,8 +17,12 @@ import {
   deleteLevels,
 } from '../../lib/services/levels';
 
+// Utils
+import { getCompany } from '../../lib/token-manager';
+
 class Levels extends Component {
   state = {
+    company: getCompany(),
     showModal: false,
     levels: [],
     levelWorking: {},
@@ -27,13 +31,14 @@ class Levels extends Component {
   };
 
   componentDidMount() {
-    this.handleGetLevels().catch(this.errorHandler);
+    const { company } = this.state;
+    this.handleGetLevels(company).catch(this.errorHandler);
   }
 
-  getListLevels = () => getLevelsList();
+  getListLevels = company => getLevelsList(company);
 
-  handleGetLevels = () =>
-  this.getListLevels()
+  handleGetLevels = company =>
+  this.getListLevels(company)
   .then((levelsList) => {
     this.setState({
       levels: levelsList,
@@ -69,17 +74,17 @@ class Levels extends Component {
   }
 
   handleSubmitModal = (data) => {
-    const { actionType } = this.state;
+    const { actionType, company } = this.state;
 
     switch (actionType) {
       case 1:
-        this.saveRegister(data);
+        this.saveRegister(data, company);
         break;
       case 2:
-        this.updateRegister(data);
+        this.updateRegister(data, company);
         break;
       case 3:
-        this.deleteRegister(data);
+        this.deleteRegister(data, company);
         break;
       default:
         // Nothing
@@ -101,26 +106,26 @@ class Levels extends Component {
     });
   }
 
-  saveRegister = (data) => {
+  saveRegister = (data, company) => {
     saveLevels(data)
     .then(() => {
-      this.handleGetLevels().catch(this.errorHandler);
+      this.handleGetLevels(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  updateRegister = (data) => {
+  updateRegister = (data, company) => {
     const { id } = data;
     updateLevels(id, data)
     .then(() => {
-      this.handleGetLevels().catch(this.errorHandler);
+      this.handleGetLevels(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  deleteRegister = (data) => {
+  deleteRegister = (data, company) => {
     const { id } = data;
     deleteLevels(id)
     .then(() => {
-      this.handleGetLevels().catch(this.errorHandler);
+      this.handleGetLevels(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
@@ -131,6 +136,7 @@ class Levels extends Component {
       levelWorking,
       hasError,
       actionType,
+      company,
     } = this.state;
 
     return (
@@ -144,6 +150,8 @@ class Levels extends Component {
           ) : null
         }
         <div className="panel">
+          <h3>Niveles</h3>
+          <br />
           <Row>
             <Button onClick={this.handleActionNew}>Nuevo Registro</Button>
           </Row>
@@ -159,6 +167,7 @@ class Levels extends Component {
               <ModalSave
                 actionType={actionType}
                 data={levelWorking}
+                company={company}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}

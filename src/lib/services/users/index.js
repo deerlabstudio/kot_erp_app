@@ -1,10 +1,10 @@
 import UserServices from './service';
 import { transformListUsers } from './transform';
 
-export async function getUsersList() {
+export async function getUsersList(company) {
   try {
     const userServices = new UserServices();
-    const usersList = await userServices.getUsers();
+    const usersList = await userServices.getUsers(company);
     return transformListUsers(usersList);
   } catch (error) {
     throw error;

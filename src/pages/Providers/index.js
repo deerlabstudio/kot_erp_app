@@ -17,8 +17,12 @@ import {
   deleteProviders,
 } from '../../lib/services/providers';
 
+// Utils
+import { getCompany } from '../../lib/token-manager';
+
 class Providers extends Component {
   state = {
+    company: getCompany(),
     showModal: false,
     providers: [],
     providerWorking: {},
@@ -27,13 +31,14 @@ class Providers extends Component {
   };
 
   componentDidMount() {
-    this.handleGetListProviders().catch(this.errorHandler);
+    const { company } = this.state;
+    this.handleGetListProviders(company).catch(this.errorHandler);
   }
 
-  getListProviders = () => getProvidersList();
+  getListProviders = company => getProvidersList(company);
 
-  handleGetListProviders = () =>
-  this.getListProviders()
+  handleGetListProviders = company =>
+  this.getListProviders(company)
   .then((providersList) => {
     this.setState({
       providers: providersList,
@@ -69,17 +74,17 @@ class Providers extends Component {
   }
 
   handleSubmitModal = (data) => {
-    const { actionType } = this.state;
+    const { actionType, company } = this.state;
 
     switch (actionType) {
       case 1:
-        this.saveRegister(data);
+        this.saveRegister(data, company);
         break;
       case 2:
-        this.updateRegister(data);
+        this.updateRegister(data, company);
         break;
       case 3:
-        this.deleteRegister(data);
+        this.deleteRegister(data, company);
         break;
       default:
         // Nothing
@@ -101,26 +106,26 @@ class Providers extends Component {
     });
   }
 
-  saveRegister = (data) => {
+  saveRegister = (data, company) => {
     saveProviders(data)
     .then(() => {
-      this.handleGetListProviders().catch(this.errorHandler);
+      this.handleGetListProviders(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  updateRegister = (data) => {
+  updateRegister = (data, company) => {
     const { id } = data;
     updateProviders(id, data)
     .then(() => {
-      this.handleGetListProviders().catch(this.errorHandler);
+      this.handleGetListProviders(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
-  deleteRegister = (data) => {
+  deleteRegister = (data, company) => {
     const { id } = data;
     deleteProviders(id)
     .then(() => {
-      this.handleGetListProviders().catch(this.errorHandler);
+      this.handleGetListProviders(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
@@ -131,6 +136,7 @@ class Providers extends Component {
       providerWorking,
       hasError,
       actionType,
+      company,
     } = this.state;
 
     return (
@@ -144,6 +150,8 @@ class Providers extends Component {
           ) : null
         }
         <div className="panel">
+          <h3>Proveedores</h3>
+          <br />
           <Row>
             <Button onClick={this.handleActionNew}>Nuevo Registro</Button>
           </Row>
@@ -159,6 +167,7 @@ class Providers extends Component {
               <ModalSave
                 actionType={actionType}
                 data={providerWorking}
+                company={company}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}

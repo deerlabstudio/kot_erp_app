@@ -8,8 +8,8 @@ export default class UsersServices {
     this.serviceUrl = ServicesEndpoints.users_services;
   }
 
-  getUsers() {
-    return fetch(`${this.serviceUrl}/users`)
+  getUsers(company) {
+    return fetch(`${this.serviceUrl}/usersByCompany?company=${company}`)
       .then(processResponse)
       .catch(errorHandler);
   }

@@ -5,58 +5,58 @@ import { Button, Row } from 'react-bootstrap';
 import '../../styles/Crud.css';
 
 // Components
-import DataTable from './users-tables';
-import ModalSave from './modal-save';
+import DataTable from './data-table';
+import ModalSave from './data-modal';
 import AlertMessage from '../../components/Alert';
 
 // Services
 import {
-  getUsersList,
-  saveUsers,
-  updateUsers,
-  deleteUsers,
-} from '../../lib/services/users';
+  getProductsList,
+  saveProducts,
+  updateProducts,
+  deleteProducts,
+} from '../../lib/services/products';
 
-import { getUsersTypesList } from '../../lib/services/userstypes';
+import { getCategoriesList } from '../../lib/services/categories';
 
 // Utils
 import { getCompany } from '../../lib/token-manager';
 
-class Users extends Component {
+class Customers extends Component {
   state = {
     company: getCompany(),
     showModal: false,
-    users: [],
-    usersTypesList: [],
-    userWorking: {},
+    products: [],
+    productWorking: {},
+    categories: [],
     actionType: 1,
     hasError: false,
   };
 
   componentDidMount() {
     const { company } = this.state;
-    this.handleGetUsers(company).catch(this.errorHandler);
-    this.handleGetUsersTypes().catch(this.errorHandler);
+    this.handleGetListProducts(company).catch(this.errorHandler);
+    this.handleGetListCategories(company).catch(this.errorHandler);
   }
 
-  getUsers = company => getUsersList(company);
+  getListProducts = company => getProductsList(company);
 
-  getUsersTypes = () => getUsersTypesList();
+  getListCategories = company => getCategoriesList(company);
 
-  handleGetUsers = company =>
-  this.getUsers(company)
-  .then((usersList) => {
+  handleGetListProducts = company =>
+  this.getListProducts(company)
+  .then((productsList) => {
     this.setState({
-      users: usersList,
+      products: productsList,
       hasError: false,
     });
   });
 
-  handleGetUsersTypes = () =>
-  this.getUsersTypes()
-  .then((usersTypes) => {
+  handleGetListCategories = company =>
+  this.getListCategories(company)
+  .then((categoriesList) => {
     this.setState({
-      usersTypesList: usersTypes,
+      categories: categoriesList,
       hasError: false,
     });
   });
@@ -72,19 +72,19 @@ class Users extends Component {
     });
   }
 
-  handleEditAction = (user) => {
+  handleEditAction = (product) => {
     this.setState({
       showModal: true,
       actionType: 2,
-      userWorking: user,
+      productWorking: product,
     });
   }
 
-  handleDeleteAction = (user) => {
+  handleDeleteAction = (product) => {
     this.setState({
       showModal: true,
       actionType: 3,
-      userWorking: user,
+      productWorking: product,
     });
   }
 
@@ -108,7 +108,7 @@ class Users extends Component {
 
     this.setState({
       showModal: false,
-      userWorking: {},
+      productWorking: {},
       actionType: 0,
     });
   }
@@ -116,43 +116,43 @@ class Users extends Component {
   handleCancelModal = () => {
     this.setState({
       showModal: false,
-      userWorking: {},
+      productWorking: {},
       actionType: 0,
     });
   }
 
   saveRegister = (data, company) => {
-    saveUsers(data)
+    saveProducts(data)
     .then(() => {
-      this.handleGetUsers(company).catch(this.errorHandler);
+      this.handleGetListProducts(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   updateRegister = (data, company) => {
     const { id } = data;
-    updateUsers(id, data)
+    updateProducts(id, data)
     .then(() => {
-      this.handleGetUsers(company).catch(this.errorHandler);
+      this.handleGetListProducts(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   deleteRegister = (data, company) => {
     const { id } = data;
-    deleteUsers(id)
+    deleteProducts(id)
     .then(() => {
-      this.handleGetUsers(company).catch(this.errorHandler);
+      this.handleGetListProducts(company).catch(this.errorHandler);
     }).catch(this.errorHandler);
   }
 
   render() {
     const {
       showModal,
-      users,
-      usersTypesList,
-      userWorking,
+      products,
+      productWorking,
       hasError,
       actionType,
       company,
+      categories,
     } = this.state;
 
     return (
@@ -166,14 +166,14 @@ class Users extends Component {
           ) : null
         }
         <div className="panel">
-          <h3>Usuarios</h3>
+          <h3>Productos</h3>
           <br />
           <Row>
             <Button onClick={this.handleActionNew}>Nuevo Registro</Button>
           </Row>
           <Row className="table-crud">
             <DataTable
-              users={users}
+              items={products}
               onEdit={this.handleEditAction}
               onDelete={this.handleDeleteAction}
             />
@@ -182,9 +182,9 @@ class Users extends Component {
             showModal ? (
               <ModalSave
                 actionType={actionType}
-                data={userWorking}
+                data={productWorking}
                 company={company}
-                usersTypesList={usersTypesList}
+                categoriesList={categories}
                 showModal={showModal}
                 onCancel={this.handleCancelModal}
                 onSubmit={this.handleSubmitModal}
@@ -197,4 +197,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default Customers;
